@@ -1,0 +1,119 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Bfxr_API_Example.as</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">/*
+    Bfrx API example.
+
+    An example showing four types of sound generation.
+
+        1: synthesized on the fly
+        2: precached
+        3: mutated on the fly
+        4: precached mutations
+    
+    For realtime applications, I *strongly* recommend precaching :)
+
+    And yes, you'll need a different Bfxr instance for each sound.
+
+    One other note: 
+        - Synthesis is substantially slower in debug mode than final release 
+          builds, so don't get too down if it makes things a bit laggy while 
+          testing.
+        - The caching API in this version is synchronous.  This means that 
+          the program can't do anything while caching sounds.  
+        - Mixes take longer to generate than plain 'ol synths, so they can
+          take substantially longer to generation mutations for.
+
+    http://www.bfxr.net
+
+    Stephen Lavelle
+    analytic@gmail.com
+
+*/</span>
+<span class="ActionScriptpackage">package</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">increpare</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">bfxr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Bfxr</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MovieClip</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Sprite</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MouseEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextField</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Mouse</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TinyButton</span>;
+
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">SWF</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"220"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">height</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"120"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">backgroundColor</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"#C0B090"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span> 
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">Bfxr_API_Example</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">Sprite</span>
+    <span class="ActionScriptBracket/Brace">{</span>        
+        <span class="ActionScriptComment">// This is a sound data string, directly copied from Bfxr.
+</span>        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">soundData</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">",0.5,,0.3484,,0.2472,0.3,0.4135,,0.2198,,,,,,,,,,,0.015,,,,,0.4293,,,0.0539,,,,masterVolume"</span>;
+                
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">sound1</span>:<span class="ActionScriptDefault_Text">Bfxr</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">sound2</span>:<span class="ActionScriptDefault_Text">Bfxr</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">sound3</span>:<span class="ActionScriptDefault_Text">Bfxr</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Bfxr_API_Example</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> 
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">//Cache sounds
+</span>            <span class="ActionScriptDefault_Text">InitSounds</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">//Make GUI
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">b</span>:<span class="ActionScriptDefault_Text">TinyButton</span>;
+            
+            <span class="ActionScriptDefault_Text">b</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">TinyButton</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Button1Click</span><span class="ActionScriptOperator">,</span><span class="ActionScriptString">"Runtime Synthesize"</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">b</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> 10; <span class="ActionScriptDefault_Text">b</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> 10;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">b</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">b</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">TinyButton</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Button2Click</span><span class="ActionScriptOperator">,</span><span class="ActionScriptString">"Play Precached"</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">b</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> 10; <span class="ActionScriptDefault_Text">b</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> 40;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">b</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">b</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">TinyButton</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Button3Click</span><span class="ActionScriptOperator">,</span><span class="ActionScriptString">"Cached Mutation"</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">b</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> 10; <span class="ActionScriptDefault_Text">b</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> 70;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">b</span><span class="ActionScriptBracket/Brace">)</span>;                                
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">InitSounds</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">//sound 1 : load , but do not cache
+</span>            <span class="ActionScriptDefault_Text">sound1</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Bfxr</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">sound1</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Load</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">soundData</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            
+            <span class="ActionScriptComment">//sound 2: load + cache
+</span>            <span class="ActionScriptDefault_Text">sound2</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Bfxr</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">sound2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Load</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">soundData</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">sound2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Cache</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;                
+            
+            <span class="ActionScriptComment">//sound 3: load + precache mutations
+</span>            <span class="ActionScriptDefault_Text">sound3</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Bfxr</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">sound3</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Load</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">soundData</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">sound3</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CacheMutations</span><span class="ActionScriptBracket/Brace">(</span>0.05<span class="ActionScriptOperator">,</span>10<span class="ActionScriptBracket/Brace">)</span>;    <span class="ActionScriptComment">//cache 5 mutations
+</span>        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Button1Click</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">caller</span>:<span class="ActionScriptDefault_Text">TinyButton</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">sound1</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Play</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Button2Click</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">caller</span>:<span class="ActionScriptDefault_Text">TinyButton</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">sound2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Play</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Button3Click</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">caller</span>:<span class="ActionScriptDefault_Text">TinyButton</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">//If mutations have been cached, this will play a random one.
+</span>            <span class="ActionScriptDefault_Text">sound3</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Play</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;            
+        <span class="ActionScriptBracket/Brace">}</span>        
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

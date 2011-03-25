@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of Bfxr_API_Example</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src">
+			<node label="assets">
+				<node label="amiga4ever.ttf" url="source/assets/amiga4ever.ttf"/>
+			</node>
+			<node icon="packageIcon" label="com.increpare.bfxr" expanded="true">
+				<node icon="actionScriptIcon" label="Bfxr.as" url="source/com/increpare/bfxr/Bfxr.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.increpare.bfxr.dataClasses" expanded="true">
+				<node icon="actionScriptIcon" label="ItemData.as" url="source/com/increpare/bfxr/dataClasses/ItemData.as.html"/>
+				<node icon="actionScriptIcon" label="LayerData.as" url="source/com/increpare/bfxr/dataClasses/LayerData.as.html"/>
+				<node icon="actionScriptIcon" label="SfxLibrary.as" url="source/com/increpare/bfxr/dataClasses/SfxLibrary.as.html"/>
+				<node icon="actionScriptIcon" label="SoundData.as" url="source/com/increpare/bfxr/dataClasses/SoundData.as.html"/>
+				<node icon="actionScriptIcon" label="SoundListRowData.as" url="source/com/increpare/bfxr/dataClasses/SoundListRowData.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.increpare.bfxr.synthesis" expanded="true">
+				<node icon="actionScriptIcon" label="IPlayerInterface.as" url="source/com/increpare/bfxr/synthesis/IPlayerInterface.as.html"/>
+				<node icon="actionScriptIcon" label="ISerializable.as" url="source/com/increpare/bfxr/synthesis/ISerializable.as.html"/>
+				<node icon="actionScriptIcon" label="WavePlayer.as" url="source/com/increpare/bfxr/synthesis/WavePlayer.as.html"/>
+				<node icon="actionScriptIcon" label="WaveWriter.as" url="source/com/increpare/bfxr/synthesis/WaveWriter.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.increpare.bfxr.synthesis.Mixer" expanded="true">
+				<node icon="actionScriptIcon" label="MixerPlayer.as" url="source/com/increpare/bfxr/synthesis/Mixer/MixerPlayer.as.html"/>
+				<node icon="actionScriptIcon" label="MixerSynth.as" url="source/com/increpare/bfxr/synthesis/Mixer/MixerSynth.as.html"/>
+				<node icon="actionScriptIcon" label="MixerTrackData.as" url="source/com/increpare/bfxr/synthesis/Mixer/MixerTrackData.as.html"/>
+				<node icon="actionScriptIcon" label="MixerTrackPlayer.as" url="source/com/increpare/bfxr/synthesis/Mixer/MixerTrackPlayer.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.increpare.bfxr.synthesis.Synthesizer" expanded="true">
+				<node icon="actionScriptIcon" label="PinkNumber.as" url="source/com/increpare/bfxr/synthesis/Synthesizer/PinkNumber.as.html"/>
+				<node icon="actionScriptIcon" label="SfxrParams.as" url="source/com/increpare/bfxr/synthesis/Synthesizer/SfxrParams.as.html"/>
+				<node icon="actionScriptIcon" label="SfxrSynth.as" url="source/com/increpare/bfxr/synthesis/Synthesizer/SfxrSynth.as.html"/>
+			</node>
+			<node icon="packageIcon" label="ui" expanded="true">
+				<node icon="actionScriptIcon" label="TinyButton.as" url="source/ui/TinyButton.as.html"/>
+			</node>
+			<node icon="mxmlAppIcon" selected="true" label="Bfxr_API_Example.as" url="source/Bfxr_API_Example.as.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 62K)" url="Bfxr_API_Example.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

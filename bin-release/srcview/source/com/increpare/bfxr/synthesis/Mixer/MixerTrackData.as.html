@@ -1,0 +1,48 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>MixerTrackData.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">increpare</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">bfxr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">synthesis</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Mixer</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">increpare</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">bfxr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">synthesis</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ISerializable</span>;
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">MixerTrackData</span> <span class="ActionScriptReserved">implements</span> <span class="ActionScriptDefault_Text">ISerializable</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">id</span>:<span class="ActionScriptDefault_Text">int</span>            <span class="ActionScriptOperator">=</span> -1 ; <span class="ActionScriptComment">// id of target track
+</span>        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onset</span>:<span class="ActionScriptDefault_Text">Number</span>    <span class="ActionScriptOperator">=</span>  0 ;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">volume</span>:<span class="ActionScriptDefault_Text">Number</span>    <span class="ActionScriptOperator">=</span>  1 ;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">synthdata</span>:<span class="ActionScriptDefault_Text">String</span>    <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span> ; <span class="ActionScriptComment">// if this is "", then track not set
+</span>        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">reverse</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">MixerTrackData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Serialize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">result</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">""</span>;
+            <span class="ActionScriptDefault_Text">result</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">id</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">"|"</span>;
+            <span class="ActionScriptDefault_Text">result</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">synthdata</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">"|"</span>;
+            <span class="ActionScriptDefault_Text">result</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">onset</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">"|"</span>;
+            <span class="ActionScriptDefault_Text">result</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">volume</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">"|"</span>;
+            <span class="ActionScriptDefault_Text">result</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">reverse</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">result</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Deserialize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">settings</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">ar</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">settings</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">split</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"|"</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">id</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ar</span><span class="ActionScriptBracket/Brace">[</span>0<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">synthdata</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ar</span><span class="ActionScriptBracket/Brace">[</span>1<span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptDefault_Text">onset</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ar</span><span class="ActionScriptBracket/Brace">[</span>2<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">volume</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ar</span><span class="ActionScriptBracket/Brace">[</span>3<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">reverse</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ar</span><span class="ActionScriptBracket/Brace">[</span>4<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">==</span><span class="ActionScriptString">"false"</span><span class="ActionScriptOperator">?</span><span class="ActionScriptReserved">false</span>:<span class="ActionScriptReserved">true</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

@@ -1,4 +1,6 @@
 /*
+	Bfrx API example.
+
 	An example showing four types of sound generation.
 
 		1: synthesized on the fly
@@ -41,7 +43,9 @@ package
 	
 	public class Bfxr_API_Example extends Sprite
 	{		
+		// This is a sound data string, directly copied from Bfxr.
 		private const soundData:String = ",0.5,,0.3484,,0.2472,0.3,0.4135,,0.2198,,,,,,,,,,,0.015,,,,,0.4293,,,0.0539,,,,masterVolume";
+				
 		private var sound1:Bfxr;
 		private var sound2:Bfxr;
 		private var sound3:Bfxr;
