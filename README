@@ -1,0 +1,29 @@
+Bfrx API example.
+
+An example showing four types of sound generation.
+
+	1: synthesized on the fly
+	2: precached
+	3: mutated on the fly
+	4: precached mutations
+
+For realtime applications, I *strongly* recommend precaching :)
+
+And yes, you'll need a different Bfxr instance for each sound.
+
+One other note: 
+	- Synthesis is substantially slower in debug mode than final release 
+	  builds, so don't get too down if it makes things a bit laggy while 
+	  testing.
+	- The caching API in this version is synchronous.  This means that 
+	  the program can't do anything while caching sounds.  
+	- Mixes take longer to generate than plain 'ol synths, so they can
+	  take substantially longer to generation mutations for.
+
+http://www.bfxr.net
+
+Stephen Lavelle
+analytic@gmail.com
+
+This is all distributed under the Apache License 2.0
+http://www.apache.org/licenses/LICENSE-2.0

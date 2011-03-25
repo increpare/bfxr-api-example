@@ -26,6 +26,9 @@
 	Stephen Lavelle
 	analytic@gmail.com
 
+	This is all distributed under the Apache License 2.0
+	http://www.apache.org/licenses/LICENSE-2.0
+
 */
 package
 {
